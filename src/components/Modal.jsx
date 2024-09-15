@@ -1,21 +1,20 @@
 import React from 'react'
-import { createPortal } from 'react-dom'
-import { useDispatch } from 'react-redux';
-import { clearCart, clearRestaurant, computeTotal } from '../store/cartSlice';
+// import { createPortal } from 'react-dom'
+// import { useDispatch } from 'react-redux';
+// import { clearCart, clearRestaurant, computeTotal } from '../store/cartSlice';
 
 const Modal = ({onClose}) => {
-    const dispatch = useDispatch();
+    const dispatch = ()=>{};
 
     const handleClearCart = () => { 
-        dispatch(clearCart());
-        dispatch(clearRestaurant());
-        dispatch(computeTotal());
+        // dispatch(clearCart());
+        // dispatch(clearRestaurant());
+        // dispatch(computeTotal());
 
-        onClose();
+        // onClose();
     }
 
     return (
-        createPortal(
             <div className="overlay absolute flex justify-center items-center top-0 left-0 w-full h-screen
              bg-[#6460605f] z-[1100]"
                 onClick={onClose}
@@ -36,7 +35,6 @@ const Modal = ({onClose}) => {
             </div>,
             document.getElementById('modal-root') 
         )
-    )
 }
 
 export default Modal

@@ -45,6 +45,7 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
   margin-top: 80px;
+  font-family: Nunitino;
 }
 
 /* A elements that don't have a class get default styles */
@@ -188,4 +189,15 @@ select {
 .input_Swig input:not(:focus):placeholder-shown ~ .swig_label {
   margin-top: 10px; 
   font-size: 15px; 
+}
+.input_Swig input:focus ~ .swig_label,
+.input_Swig input:not(:placeholder-shown) ~ .swig_label {
+  margin-top: -6px; 
+  font-size: 12px;
+}
+
+
+
+::-webkit-scrollbar{
+  display: none;
 }

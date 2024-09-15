@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addItem, computeTotal, setRestaurant } from "../store/cartSlice";
-import { CDN_URL } from "../utils/constants";
+// import { addItem, computeTotal, setRestaurant } from "../store/cartSlice";
+import { CDN_URL } from "../config/Config";
 import Modal from './Modal';
 import { BsCaretDownSquare } from "react-icons/bs";
 
 const CategoryItem = ({ data, restaurant }) => {
-	const { name, price, defaultPrice, description, imageId, isVeg } = data;
-    const selectedRestaurant = useSelector(state => state.cart.selectedRestaurant);
+	const { name, price, defaultPrice, description, imageId, isVeg } = data || {};
+    const selectedRestaurant = [] || {} || null;
     const [showModal, setShowModal] = useState(false);
-    const dispatch = useDispatch();
+    const dispatch = ()=>{};
 
     const handleAddItem = () => {
         let dataToAdd;

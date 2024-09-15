@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RestaurantCard, { withPromoted } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
-import { Link, useNavigate } from "react-router-dom";
-import useOnlineStatus from "../hooks/useOnlineStatus";
+import {  useNavigate } from "react-router-dom";
 import FoodCategories from "./FoodCategories";
 import useApi from "../apis/ApiConfig";
 import RestaurantsList from "./RestaurantsList";
@@ -13,7 +12,6 @@ import { FaChevronDown } from "react-icons/fa6";
 const Home = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState({});
   const [Data, setData] = useState({});
-  const onlineStatus = useOnlineStatus();
   const RestaurantCardPromoted = withPromoted(RestaurantCard);
   const [ShowSorting, setShowSorting] = useState(false);
   const [CheckedSort, setCheckedSort] = useState();
@@ -67,25 +65,16 @@ const Home = () => {
     }
   };
 
-  if (!onlineStatus) {
-    return (
-      <h2>
-        Looks like you're offline!! Please check your internet connection.
-      </h2>
-    );
-  }
-  if (Data[0]?.card?.card?.title === "Location Unserviceable") {
+  if (Data?.[0]?.card?.card?.title === "Location Unserviceable") {
     return <LocationUnserviceable />;
   }
   if (Object.values(listOfRestaurants)?.length === 0) {
     return <Shimmer />;
   }
 
-  console.log(listOfRestaurants, "restaurants");
-
   return (
     <div className="body max-w-[1080px] mx-auto pt-3  pb-20">
-      <FoodCategories data={Data[0]?.card?.card} />
+      <FoodCategories data={Data?.[0]?.card?.card} />
       <hr className="border  mt-12 bg-gray-50" />
       <br />
       <RestaurantsList data={Data[1]?.card?.card} />
