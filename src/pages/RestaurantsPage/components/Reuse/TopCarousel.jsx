@@ -3,6 +3,8 @@ import { HiMiniArrowLeft, HiMiniArrowRight } from "react-icons/hi2";
 import { MenuCarousel } from "./../../../../config/Config";
 import { useNavigate } from "react-router-dom";
 import { formatPrice } from "../../../../hooks/UseFormater";
+import ReModal from "../../../../components/ReModal";
+import Quantity from "./Quantity";
 // import CouponModal from "../../../components/CouponModal";
 const TopCarousel = ({ data, title }) => {
   const scrollRef = useRef(null);
@@ -38,10 +40,13 @@ const TopCarousel = ({ data, title }) => {
     window.addEventListener("resize", updateButtonState);
     return () => window.removeEventListener("resize", updateButtonState);
   }, [data]);
-console.log(data,"top")
+  const check = [1,23,6]  || data?.[0]?.dish?.info?.variantsV2 ;
+console.log(Object.keys(data?.[0]?.dish?.info?.variantsV2).length > 0,"top")
+// const [isDataModalOpen ,  setDataModalOpen] =useState(null)
 
   return (
     <>
+    <ReModal isOpen={isModalOpen} onClose={()=>setModalOpen(null)}/>
       <div className="h-auto w-full mb-8 m-auto">
         {/* <CouponModal isOpen={isModalOpen} onClose={() => setModalOpen(null)} /> */}
         <div className="bar flex items-center justify-between">
@@ -78,7 +83,7 @@ console.log(data,"top")
               {data
                 ? data?.map((val, i) => (
                     <div
-                      onClick={() => setModalOpen(val)}
+                      // onClick={() => setModalOpen(val?.dish?.info)}
                       key={i}
                       className="flex-[0_0_auto] relative flex gap-3  flex-col  border-2  cursor-pointer   rounded-xl mx-[12px]"
                     >
@@ -89,11 +94,24 @@ console.log(data,"top")
                         loading="lazy"
                       />
                       <div className="cod justify-between px-5 py-5 w-full items-center absolute flex bottom-0">
-                        <strong className="font-extrabold capitalize text-white text-lg">
+                        <strong className="flex-1 font-extrabold capitalize text-white text-lg">
                         ₹ {formatPrice(val?.dish?.info?.defaultPrice) ||
                       formatPrice(val?.dish?.info?.price)}
                         </strong>
-                        <button className="bg-white border text-lg text-blue-950 uppercase  font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 ">Add</button>
+                        {/* <button className="bg-white border text-lg text-blue-950 uppercase  font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 ">Add</button> */}
+                       <div className="flex items-center pb-4 pl-6 justify-end   flex-1 ">
+                       {Object.keys(data?.[0]?.dish?.info?.variantsV2)?.length > 0 ?
+                         (
+                          <button
+                            className="bg-white border text-lg text-blue-950 uppercase -bottom-3 font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 "
+                            onClick={() => setModalOpen(val?.dish?.info)}
+                          >
+                            Add
+                          </button>
+                        ) : (
+                          <Quantity />
+                        )}
+                       </div>
                       </div>
                     </div>
                   ))

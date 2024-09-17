@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import RestaurantDetails from "./../../components/RestaurantDetails";
 import useApi from "../../apis/ApiConfig";
 import ParticularResSearch from "./components/ParticularResSearch";
-import Menu from "./components/Menu";
 
 const RestaurantsPage = () => {
   const { key, pathname, search } = useLocation(); 
@@ -35,7 +34,12 @@ const RestaurantsPage = () => {
       );
       setdata(data?.cards);
       setLoading(false);
-      console.log(data?.cards , "topp")
+      GetMenuList(data?.cards)
+      window.scrollTo({
+        behavior: "smooth",
+        top: 0,
+        left : 0
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -43,13 +47,14 @@ const RestaurantsPage = () => {
     }
   };
 
+
   useEffect(() => {
     GetRestMenu();
-    window.scrollTo({
-      behavior: "smooth",
-      top: 0,
-    });
-  }, [key]);
+  }, [pathname]);
+  
+  useEffect(()=>{
+    document.title = data?.[0]?.card?.card?.text ?? 'Online Food Delivery';
+  },[key])
 
   useEffect(() => {
     const queryParams = new URLSearchParams(search);
@@ -59,7 +64,6 @@ const RestaurantsPage = () => {
 
   return (
     <div>
-      <Menu/>
       {!showSearchBar && (
         <RestaurantDetails
           restaurantData={data}

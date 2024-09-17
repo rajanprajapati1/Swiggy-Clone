@@ -7,9 +7,11 @@ const SwiggyAuthContext = createContext(null);
 export const SwiggyAuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [Searchhlist,setSearchhlist] = useState([])
 
   return (
-    <SwiggyAuthContext.Provider value={{ user,  loading ,setUser }}>
+    <SwiggyAuthContext.Provider value={{ user,  loading ,setUser ,Searchhlist ,
+      setSearchhlist }}>
       { children}
     </SwiggyAuthContext.Provider>
   );

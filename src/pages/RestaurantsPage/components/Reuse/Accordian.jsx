@@ -3,6 +3,8 @@ import { IoChevronDown } from "react-icons/io5";
 import { formatPrice } from "./../../../../hooks/UseFormater";
 import { MenuImg } from "../../../../config/Config";
 import { IoStar } from "react-icons/io5";
+import ReModal from "./../../../../components/ReModal";
+import Quantity from "./Quantity";
 
 export const CustomAccordionItem = ({
   title,
@@ -16,141 +18,165 @@ export const CustomAccordionItem = ({
   price,
   discountBefore,
 }) => {
+  const [isModalOpen, setModalOpen] = useState(null);
+
   return (
-    <div className="border-b mt-2 border-gray-200 w-full">
-      {/* {isList &&  <div className="block-top w-full py-1 px-1 ">
+    <>
+      <ReModal isOpen={isModalOpen} onClose={() => setModalOpen(null)} />
+      <div className="border-b mt-2 border-gray-200 w-full">
+        {/* {isList &&  <div className="block-top w-full py-1 px-1 ">
           {!isList && <span className="font-extrabold text-base">
           {title} 12
           </span>}
         </div>} */}
-      {iskey ? (
-        <button
-          className="flex justify-between items-center w-full py-4 px-1 text-left"
-          onClick={onClick}
-        >
-          <span className="text-gray-800 font-extrabold">
-            {title}&nbsp;
-            {isHaveItemlength && `(${isHaveItemlength})`}
-          </span>
-          <IoChevronDown
-            className={`w-5 h-5 text-gray-500 transform transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-      ) : (
-        // {/* ItemCard Card */}
-        <div className="flex justify-between items-center w-full py-4 px-1 mb-2">
-          <div className="details flex-1 flex-col flex">
-            <span className="title text-lg text-gray-800 font-extrabold">
-              {title}
+        {iskey ? (
+          <button
+            className="flex justify-between items-center w-full py-4 px-1 text-left"
+            onClick={onClick}
+          >
+            <span className="text-gray-800 font-extrabold" id="">
+              {title}&nbsp;
+              {isHaveItemlength && `(${isHaveItemlength})`}
             </span>
-            <span className="price text-lg mt-1 text-gray-800 font-bold">
-              {" "}
-              <span className="font-normal text-base text-gray-400 line-through">
-                ₹ {discountBefore}
-              </span>{" "}
-              ₹ {price}
-            </span>
-            {itemdata?.card?.info?.ratings?.aggregatedRating?.rating && (
-              <span className="rating mt-2 flex items-center font-semibold text-sm gap-1">
-                <IoStar size={12} />
-                {itemdata?.card?.info?.ratings?.aggregatedRating?.rating}&nbsp;(
-                {itemdata?.card?.info?.ratings?.aggregatedRating?.ratingCountV2}
-                )
+            <IoChevronDown
+              className={`w-5 h-5 text-gray-500 transform transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        ) : (
+          // {/* ItemCard Card */}
+          <div className="flex justify-between items-center w-full py-4 px-1 mb-2">
+            <div className="details flex-1 flex-col flex">
+              <span className="title text-lg text-gray-800 font-extrabold">
+                {title}
               </span>
-            )}
-            {itemdata?.card?.info?.description && (
-              <p className="mt-3 text-slate-500 text-[16px] tracking-tight pr-16">
-                {itemdata?.card?.info?.description}
-              </p>
-            )}
+              <span className="price text-lg mt-1 text-gray-800 font-bold">
+                {" "}
+                <span className="font-normal text-base text-gray-400 line-through">
+                  ₹ {discountBefore}
+                </span>{" "}
+                ₹ {price}
+              </span>
+              {itemdata?.card?.info?.ratings?.aggregatedRating?.rating && (
+                <span className="rating mt-2 flex items-center font-semibold text-sm gap-1">
+                  <IoStar size={12} />
+                  {itemdata?.card?.info?.ratings?.aggregatedRating?.rating}
+                  &nbsp;(
+                  {
+                    itemdata?.card?.info?.ratings?.aggregatedRating
+                      ?.ratingCountV2
+                  }
+                  )
+                </span>
+              )}
+              {itemdata?.card?.info?.description && (
+                <p className="mt-3 text-slate-500 text-[16px] tracking-tight pr-16">
+                  {itemdata?.card?.info?.description}
+                </p>
+              )}
+            </div>
+            <div className="images relative flex w-[10vw]  items-center justify-center h-[10vw] flex-col">
+              {itemdata?.card?.info?.imageId && (
+                <img
+                  src={MenuImg + itemdata?.card?.info?.imageId}
+                  className="w-full h-full object-cover rounded-xl shadow-md"
+                  alt=""
+                />
+              )}
+                                     {Object?.keys(itemdata?.card?.info?.variantsV2).length > 0
+ ? (
+                <button
+                  className="bg-white border absolute  text-lg text-blue-950 uppercase -bottom-3 font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 "
+                  onClick={() => setModalOpen(itemdata?.card?.info)}
+                >
+                  Add
+                </button>
+              ) : (
+                <Quantity />
+              )}
+            </div>
           </div>
-          <div className="images relative flex w-[10vw]  items-center justify-center h-[10vw] flex-col">
-            {itemdata?.card?.info?.imageId && (
-              <img
-                src={MenuImg + itemdata?.card?.info?.imageId}
-                className="w-full h-full object-cover rounded-xl shadow-md"
-                alt=""
-              />
-            )}
-            <button className="bg-white border absolute  text-lg text-blue-950 uppercase -bottom-3 font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 ">
-              Add
-            </button>
-            {/* </div> */}
-          </div>
-        </div>
-      )}
-      <div
-        className={`overflow-hidden transition-all duration-200 ${
-          isOpen ? "max-h-[800vh]" : "max-h-0"
-        }`}
-      >
-        {/* categorie Card */}
-        <div className="py-2 flex flex-col gap-4 ">
-          <div className="w-full  py-4 flex flex-col">
-            {isHaveItemCard &&
-              isHaveItemCard?.map((val, i) => {
-                const price =
-                  formatPrice(val?.card?.info?.finalPrice) ||
-                  formatPrice(val?.card?.info?.defaultPrice) ||
-                  formatPrice(val?.card?.info?.price);
+        )}
+        <div
+          className={`overflow-hidden transition-all duration-200 ${
+            isOpen ? "max-h-[800vh]" : "max-h-0"
+          }`}
+        >
+          {/* categorie Card */}
+          <div className="py-2 flex flex-col gap-4 ">
+            <div className="w-full  py-4 flex flex-col">
+              {isHaveItemCard &&
+                isHaveItemCard?.map((val, i) => {
+                  const price =
+                    formatPrice(val?.card?.info?.finalPrice) ||
+                    formatPrice(val?.card?.info?.defaultPrice) ||
+                    formatPrice(val?.card?.info?.price);
 
-                const discountBefore =
-                  formatPrice(val?.card?.info?.price) ||
-                  formatPrice(val?.card?.info?.defaultPrice);
+                  const discountBefore =
+                    formatPrice(val?.card?.info?.price) ||
+                    formatPrice(val?.card?.info?.defaultPrice);
 
-                return (
-                  <div className="flex justify-between items-center w-full py-4 px-1 mb-2">
-                    <div className="details flex-1 flex-col flex">
-                      <span className="title text-lg text-gray-800 font-extrabold">
-                        {val?.card?.info?.name}
-                      </span>
-                      <span className="price text-lg mt-1 text-gray-800 font-bold">
-                        {" "}
-                        <span className="font-normal text-base text-gray-400 line-through">
-                          ₹ {discountBefore}
-                        </span>{" "}
-                        ₹ {price}
-                      </span>
-                      {val?.card?.info?.ratings?.aggregatedRating?.rating && (
-                        <span className="rating mt-2 flex items-center font-semibold text-sm gap-1">
-                          <IoStar size={12} />
-                          {val?.card?.info?.ratings?.aggregatedRating?.rating}
-                          &nbsp;(
-                          {
-                            val?.card?.info?.ratings?.aggregatedRating
-                              ?.ratingCountV2
-                          }
-                          )
+                  return (
+                    <div className="flex justify-between items-center w-full py-4 px-1 mb-2">
+                      <div className="details flex-1 flex-col flex">
+                        <span className="title text-lg text-gray-800 font-extrabold">
+                          {val?.card?.info?.name}
                         </span>
-                      )}
-                      {val?.card?.info?.description && (
-                        <p className="mt-3 text-slate-500 text-[16px] tracking-tight pr-16">
-                          {val?.card?.info?.description}
-                        </p>
-                      )}
+                        <span className="price text-lg mt-1 text-gray-800 font-bold">
+                          {" "}
+                          <span className="font-normal text-base text-gray-400 line-through">
+                            ₹ {discountBefore}
+                          </span>{" "}
+                          ₹ {price}
+                        </span>
+                        {val?.card?.info?.ratings?.aggregatedRating?.rating && (
+                          <span className="rating mt-2 flex items-center font-semibold text-sm gap-1">
+                            <IoStar size={12} />
+                            {val?.card?.info?.ratings?.aggregatedRating?.rating}
+                            &nbsp;(
+                            {
+                              val?.card?.info?.ratings?.aggregatedRating
+                                ?.ratingCountV2
+                            }
+                            )
+                          </span>
+                        )}
+                        {val?.card?.info?.description && (
+                          <p className="mt-3 text-slate-500 text-[16px] tracking-tight pr-16">
+                            {val?.card?.info?.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="images relative flex w-[10vw]  items-center justify-center h-[10vw] flex-col">
+                        {val?.card?.info?.imageId && (
+                          <img
+                            src={MenuImg + val?.card?.info?.imageId}
+                            className="w-full h-full object-cover rounded-xl shadow-md"
+                            alt=""
+                          />
+                        )}
+                        {Object?.keys(val?.card?.info?.variantsV2).length > 0
+                        ? (
+                          <button
+                            className="bg-white border absolute  text-lg text-blue-950 uppercase -bottom-3 font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 "
+                            onClick={() => setModalOpen(val?.card?.info)}
+                          >
+                            Add
+                          </button>
+                        ) : (
+                          <Quantity />
+                        )}
+                        {/* </div> */}
+                      </div>
                     </div>
-                    <div className="images relative flex w-[10vw]  items-center justify-center h-[10vw] flex-col">
-                      {val?.card?.info?.imageId && (
-                        <img
-                          src={MenuImg + val?.card?.info?.imageId}
-                          className="w-full h-full object-cover rounded-xl shadow-md"
-                          alt=""
-                        />
-                      )}
-                      <button className="bg-white border absolute  text-lg text-blue-950 uppercase -bottom-3 font-extrabold rounded-md shadow-md px-6 py-[2px] hover:bg-gray-200 ">
-                        Add
-                      </button>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -171,19 +197,23 @@ export default function CustomAccordion({ title, isList, data, totalMenuInd }) {
           className="flex justify-between items-center w-full py-4 px-1 text-left"
           onClick={() => toggleItem(188)}
         >
-          <span className="text-gray-800 text-xl font-extrabold">
+          <span
+            className="text-gray-800 text-xl font-extrabold"
+            name={title}
+            id={title}
+          >
             {title} &nbsp;
             {totalMenuInd && `(${totalMenuInd})`}
           </span>
           <IoChevronDown
             className={`w-5 h-5 text-gray-500 transform transition-transform duration-200 ${
-              openItems.includes(188) ? "rotate-180" : ""
+              !openItems.includes(188) ? "rotate-180" : ""
             }`}
           />
         </button>
         <div
           className={`overflow-hidden transition-all duration-200 ${
-            openItems.includes(188) ? "max-h-[800vh]" : "max-h-0"
+            !openItems.includes(188) ? "max-h-[800vh]" : "max-h-0"
           }`}
         >
           {data?.map((item, index) => (
@@ -237,7 +267,13 @@ export const AccordianListMenu = ({
           className="flex justify-between items-center w-full py-4 px-1 text-left"
           onClick={toggleItem}
         >
-          <span className="text-gray-800 font-extrabold">{title}</span>
+          <span
+            className="text-gray-800 font-extrabold"
+            name={title} // Dynamically set name attribute based on title
+            id={title}
+          >
+            {title}
+          </span>
         </button>
 
         {data?.map((item, index) => (

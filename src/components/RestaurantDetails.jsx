@@ -21,6 +21,7 @@ const RestaurantDetails = ({
   isOpenSearch,
   onOpen,
 }) => {
+  
   if (Loading) {
     return <ResSkeleton />;
   }
@@ -32,7 +33,7 @@ const RestaurantDetails = ({
         urlparts={urlparts}
         title={restaurantData?.[0]?.card?.card?.text}
       />
-      <Title title={restaurantData?.[0]?.card?.card?.text} />
+      <Title title={restaurantData?.[0]?.card?.card?.text} data={restaurantData?.[2]} />
       <RestaurantBanner data={restaurantData?.[2]} />
       <DealsCarousel
         data={

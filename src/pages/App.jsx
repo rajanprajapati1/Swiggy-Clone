@@ -55,7 +55,11 @@ const App = () => {
   }
 
   useEffect(()=>{
-    CheckUserIsLogin()
+    CheckUserIsLogin();
+    window.scrollTo({
+      behavior: "smooth",
+      top: 0,
+    });
   },[])
 
   return (

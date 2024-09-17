@@ -1,21 +1,25 @@
 import menuSvg from '../../../assets/restaurant-menu-svgrepo-com (1).svg'
 import { useState, useEffect, useRef } from 'react'
 
-const Menu = () => {
+const Menu = ({data}) => {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef(null)
   const overlayRef = useRef(null)
 
-  const menuItems = [
-    { name: 'Items at 99', count: 6 },
-    { name: 'Items at 125', count: 2 },
-    { name: 'Items at 449', count: 2 },
-    { name: 'Items at 529', count: 2 },
-    { name: 'Recommended', count: 20 },
-    { name: 'Cakes', count: 14 },
-    { name: 'Pastries', count: 10 },
-    { name: 'Brownies', count: 9 },
-  ]
+
+  const HandleMoveToMenu = (MenuId) => {
+    const targetElement = document.querySelector(`[name='${MenuId}']`);  
+    if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        const offsetTop = window.pageYOffset + rect.top;  
+        window.scrollTo({
+          top: offsetTop - 100,  
+          behavior: 'smooth'   
+        });
+        setIsOpen(false)
+      }
+    }
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -47,6 +51,8 @@ const Menu = () => {
     }
   }, [isOpen])
 
+  console.log(data,"li")
+
   return (
     <>
       {/* Overlay */}
@@ -61,17 +67,17 @@ const Menu = () => {
       {/* Menu Drawer */}
       <div
         ref={menuRef}
-        className="fixed bottom-0 left-0 right-0 bg-[#02060C] text-white max-w-[800px] mx-auto z-50 rounded-t-3xl shadow-lg p-6 max-h-[80vh] overflow-y-auto transition-all duration-300 ease-in-out"
+        className="fixed bottom-0 left-0 right-0 bg-[#02060C] text-white max-w-[800px] mx-auto z-50 rounded-t-3xl shadow-lg p-6 max-h-[60vh] overflow-y-auto transition-all duration-300 ease-in-out"
         style={{ transform: 'translateY(100%)', opacity: 0 }}
       >
-        <h2 className="text-2xl font-bold mb-4">Theobroma</h2>
-        <ul className="space-y-4">
-          {menuItems.map((item, index) => (
-            <li key={index} className="flex justify-between items-center border-b pb-2">
-              <span className="text-lg">{item.name}</span>
-              <span className="text-gray-500">{item.count}</span>
-            </li>
-          ))}
+        <ul className="space-y-3">
+          {data?.map((item, index) =>{
+            if(item == null) return ;
+            return  <li key={index} className="flex justify-between cursor-pointer items-center pb-1.5">
+            <span className="text-base font-medium" onClick={()=>HandleMoveToMenu(item?.name)}>{item?.name}</span>
+            <span className="text-gray-500 text-base font-bold">{item?.count}</span>
+          </li>
+          })}
         </ul>
       </div>
 
